@@ -1,3 +1,30 @@
-## Health Check
+### Health Check
 GET http://localhost:8080/api/healthcheck
+
+### List
+GET http://localhost:8080/api/notes
+
+### Create
+POST http://localhost:8080/api/notes
+content-type: application/json
+
+{
+    "title": "a note",
+    "content": "here some reminder, mention @raditzlawliet",
+    "is_published": true
+}
+
+### Read
+GET http://localhost:8080/api/notes/05406abb-187e-4f00-9399-07872a6677f6
+
+### Update
+PATCH http://localhost:8080/api/notes/05406abb-187e-4f00-9399-07872a6677f6
+content-type: application/json
+
+{
+    "content": "here some reminder, mention @raditzlawliet share and like"
+}
+
+### Delete
+DELETE http://localhost:8080/api/notes/05406abb-187e-4f00-9399-07872a6677f6
 

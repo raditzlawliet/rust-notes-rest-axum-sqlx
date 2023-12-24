@@ -1,11 +1,19 @@
+mod handler;
+mod model;
+mod route;
+mod schema;
+
 use std::sync::Arc;
 
-use axum::{response::IntoResponse, routing::get, Json, Router};
+use axum::http::{header::CONTENT_TYPE, Method};
 
 use dotenv::dotenv;
 use tokio::net::TcpListener;
 
 use sqlx::mysql::{MySqlPool, MySqlPoolOptions};
+
+use route::create_router;
+use tower_http::cors::{Any, CorsLayer};
 
 pub struct AppState {
     db: MySqlPool,
@@ -32,9 +40,12 @@ async fn main() {
         }
     };
 
-    let app = Router::new()
-        .route("/api/healthcheck", get(health_check_handler))
-        .with_state(Arc::new(AppState { db: pool.clone() }));
+    let cors = CorsLayer::new()
+        .allow_methods([Method::GET, Method::POST])
+        .allow_origin(Any)
+        .allow_headers([CONTENT_TYPE]);
+
+    let app = create_router(Arc::new(AppState { db: pool.clone() })).layer(cors);
 
     println!("✅ Server started successfully at 0.0.0.0:8080");
 
@@ -42,15 +53,4 @@ async fn main() {
     axum::serve(listener, app.into_make_service())
         .await
         .unwrap();
-}
-
-pub async fn health_check_handler() -> impl IntoResponse {
-    const MESSAGE: &str = "API Services";
-
-    let json_response = serde_json::json!({
-        "status": "ok",
-        "message": MESSAGE
-    });
-
-    Json(json_response)
 }
