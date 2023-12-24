@@ -22,9 +22,19 @@ cargo add sqlx --features "runtime-async-std-native-tls mysql chrono uuid"
 cargo build
 cargo run
 
-# For Automatically rebuild the project
+# CLI For Watch source when running & Automatically rebuild the project
 cargo install cargo-watch
 
 # Run with watch
 cargo watch -q -c -w src/ -x run
+
+
+# Docker Compose up & detach
+docker-compose up -d
+
+# Shutdown docker compose
+docker-compose down
+
+
+
 ```
