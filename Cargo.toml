@@ -1,5 +1,5 @@
 [package]
-name = "raditzlawliet_rust-note-rest"
+name = "raditzlawliet_rust-notes-rest-axum-sqlx"
 version = "0.1.0"
 edition = "2021"
 
