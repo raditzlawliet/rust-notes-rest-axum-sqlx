@@ -1,8 +1,12 @@
-Current Development Stack
+## CRUD REST API with Rust 🦀and MySQL using Axum & SQLx
+This repository is for medium article: https://medium.com/@raditzlawliet/build-crud-rest-api-with-rust-and-mysql-using-axum-sqlx-d7e50b3cd130
+
+### Current Development Stack
 
 - rustc 1.73.0
 - cargo 1.73.0
 
+### How to...
 ```sh
 # Init Project
 cargo init raditzlawliet_rust-note-rest
