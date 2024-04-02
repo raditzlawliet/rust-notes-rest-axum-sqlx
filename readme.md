@@ -1,10 +1,10 @@
 ## CRUD REST API with Rust 🦀and MySQL using Axum & SQLx
 This repository is for medium article: https://medium.com/@raditzlawliet/build-crud-rest-api-with-rust-and-mysql-using-axum-sqlx-d7e50b3cd130
 
-### Current Development Stack
+### Current Stack Version
 
-- rustc 1.73.0
-- cargo 1.73.0
+- rustc 1.77.0
+- cargo 1.77.0
 
 ### How to...
 ```sh
@@ -39,6 +39,7 @@ docker-compose up -d
 # Shutdown docker compose
 docker-compose down
 
+
 # CLI For migration
 cargo install sqlx-cli
 
@@ -50,5 +51,4 @@ sqlx migrate run
 
 # perform migration down/revert (optional)
 sqlx migrate revert
-
 ```
