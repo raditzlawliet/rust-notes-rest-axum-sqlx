@@ -90,8 +90,8 @@ pub async fn create_note_handler(
     let id = uuid::Uuid::new_v4().to_string();
     let query_result = sqlx::query(r#"INSERT INTO notes (id, title, content) VALUES (?, ?, ?)"#)
         .bind(&id)
-        .bind(body.title.to_string())
-        .bind(body.content.to_string())
+        .bind(&body.title)
+        .bind(&body.content)
         .execute(&data.db)
         .await
         .map_err(|err: sqlx::Error| err.to_string());
@@ -113,7 +113,7 @@ pub async fn create_note_handler(
     }
 
     // // Get insereted note by ID with query macro
-    // let note = sqlx::query_as!(NoteModel, r#"SELECT * FROM notes WHERE id = ?"#, id)
+    // let note = sqlx::query_as!(NoteModel, r#"SELECT * FROM notes WHERE id = ?"#, &id)
     //     .fetch_one(&data.db)
     //     .await
     //     .map_err(|e| {
@@ -153,7 +153,7 @@ pub async fn get_note_handler(
     // let query_result = sqlx::query_as!(
     //     NoteModel,
     //     r#"SELECT * FROM notes WHERE id = ?"#,
-    //     id.to_string()
+    //     &id
     // )
     // .fetch_one(&data.db)
     // .await;
