@@ -7,12 +7,6 @@ pub struct FilterOptions {
     pub limit: Option<usize>,
 }
 
-// Read/Delete
-#[derive(Deserialize, Debug)]
-pub struct ParamOptions {
-    pub id: String,
-}
-
 // Create
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CreateNoteSchema {

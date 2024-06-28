@@ -89,7 +89,7 @@ pub async fn create_note_handler(
     // Insert
     let id = uuid::Uuid::new_v4().to_string();
     let query_result = sqlx::query(r#"INSERT INTO notes (id, title, content) VALUES (?, ?, ?)"#)
-        .bind(id.clone())
+        .bind(&id)
         .bind(body.title.to_string())
         .bind(body.content.to_string())
         .execute(&data.db)
@@ -125,7 +125,7 @@ pub async fn create_note_handler(
 
     // Get insereted note by ID without query macro
     let note = sqlx::query_as::<_, NoteModel>(r#"SELECT * FROM notes WHERE id = ?"#)
-        .bind(id)
+        .bind(&id)
         .fetch_one(&data.db)
         .await
         .map_err(|e| {
@@ -146,7 +146,7 @@ pub async fn create_note_handler(
 }
 
 pub async fn get_note_handler(
-    Path(id): Path<uuid::Uuid>,
+    Path(id): Path<String>,
     State(data): State<Arc<AppState>>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
     // // get using query macro
@@ -160,7 +160,7 @@ pub async fn get_note_handler(
 
     // get not using query macro
     let query_result = sqlx::query_as::<_, NoteModel>(r#"SELECT * FROM notes WHERE id = ?"#)
-        .bind(id.to_string())
+        .bind(&id)
         .fetch_one(&data.db)
         .await;
 
@@ -193,7 +193,7 @@ pub async fn get_note_handler(
 }
 
 pub async fn edit_note_handler(
-    Path(id): Path<uuid::Uuid>,
+    Path(id): Path<String>,
     State(data): State<Arc<AppState>>,
     Json(body): Json<UpdateNoteSchema>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
@@ -201,14 +201,14 @@ pub async fn edit_note_handler(
     // let query_result = sqlx::query_as!(
     //     NoteModel,
     //     r#"SELECT * FROM notes WHERE id = ?"#,
-    //     id.to_string()
+    //     &id
     // )
     // .fetch_one(&data.db)
     // .await;
 
     // validate note without query macro
     let query_result = sqlx::query_as::<_, NoteModel>(r#"SELECT * FROM notes WHERE id = ?"#)
-        .bind(id.to_string())
+        .bind(&id)
         .fetch_one(&data.db)
         .await;
 
@@ -240,14 +240,10 @@ pub async fn edit_note_handler(
     // Update (if empty, use old value)
     let update_result =
         sqlx::query(r#"UPDATE notes SET title = ?, content = ?, is_published = ? WHERE id = ?"#)
-            .bind(body.title.to_owned().unwrap_or_else(|| note.title.clone()))
-            .bind(
-                body.content
-                    .to_owned()
-                    .unwrap_or_else(|| note.content.clone()),
-            )
+            .bind(&body.title.unwrap_or_else(|| note.title))
+            .bind(&body.content.unwrap_or_else(|| note.content))
             .bind(i8_is_published)
-            .bind(id.to_string())
+            .bind(&id)
             .execute(&data.db)
             .await
             .map_err(|e| {
@@ -273,7 +269,7 @@ pub async fn edit_note_handler(
     // let updated_note = sqlx::query_as!(
     //     NoteModel,
     //     r#"SELECT * FROM notes WHERE id = ?"#,
-    //     id.to_string()
+    //     &id
     // )
     // .fetch_one(&data.db)
     // .await
@@ -286,7 +282,7 @@ pub async fn edit_note_handler(
 
     // get updated data without query macro
     let updated_note = sqlx::query_as::<_, NoteModel>(r#"SELECT * FROM notes WHERE id = ?"#)
-        .bind(id.to_string())
+        .bind(&id)
         .fetch_one(&data.db)
         .await
         .map_err(|e| {
@@ -307,11 +303,11 @@ pub async fn edit_note_handler(
 }
 
 pub async fn delete_note_handler(
-    Path(id): Path<uuid::Uuid>,
+    Path(id): Path<String>,
     State(data): State<Arc<AppState>>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
     // // delete with query macro
-    // let query_result = sqlx::query!(r#"DELETE FROM notes WHERE id = ?"#, id.to_string())
+    // let query_result = sqlx::query!(r#"DELETE FROM notes WHERE id = ?"#, &id)
     //     .execute(&data.db)
     //     .await
     //     .map_err(|e| {
@@ -326,7 +322,7 @@ pub async fn delete_note_handler(
 
     // delete not using query macro
     let query_result = sqlx::query(r#"DELETE FROM notes WHERE id = ?"#)
-        .bind(id.to_string())
+        .bind(&id)
         .execute(&data.db)
         .await
         .map_err(|e| {
@@ -345,7 +341,7 @@ pub async fn delete_note_handler(
         return Err((StatusCode::NOT_FOUND, Json(error_response)));
     }
 
-    Ok(StatusCode::NO_CONTENT)
+    Ok(StatusCode::OK)
 }
 
 // Convert DB Model to Response
