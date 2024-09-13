@@ -4,7 +4,7 @@ This repository is for medium article: https://medium.com/@raditzlawliet/build-c
 
 ### Current Stack Version
 
-- Rust 1.80.1
+- Rust 1.81.0
 
 ### How to...
 
