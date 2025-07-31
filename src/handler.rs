@@ -26,12 +26,10 @@ pub async fn health_check_handler() -> impl IntoResponse {
 }
 
 pub async fn note_list_handler(
-    opts: Option<Query<FilterOptions>>,
+    Query(opts): Query<FilterOptions>,
     State(data): State<Arc<AppState>>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
     // Param
-    let Query(opts) = opts.unwrap_or_default();
-
     let limit = opts.limit.unwrap_or(10);
     let offset = (opts.page.unwrap_or(1) - 1) * limit;
 
@@ -70,7 +68,7 @@ pub async fn note_list_handler(
     // Response
     let note_responses = notes
         .iter()
-        .map(|note| to_note_response(&note))
+        .map(to_note_response)
         .collect::<Vec<NoteModelResponse>>();
 
     let json_response = serde_json::json!({
@@ -174,22 +172,20 @@ pub async fn get_note_handler(
                 })
             });
 
-            return Ok(Json(note_response));
+            Ok(Json(note_response))
         }
         Err(sqlx::Error::RowNotFound) => {
             let error_response = serde_json::json!({
                 "status": "fail",
                 "message": format!("Note with ID: {} not found", id)
             });
-            return Err((StatusCode::NOT_FOUND, Json(error_response)));
+            Err((StatusCode::NOT_FOUND, Json(error_response)))
         }
-        Err(e) => {
-            return Err((
-                StatusCode::INTERNAL_SERVER_ERROR,
-                Json(json!({"status": "error","message": format!("{:?}", e)})),
-            ));
-        }
-    };
+        Err(e) => Err((
+            StatusCode::INTERNAL_SERVER_ERROR,
+            Json(json!({"status": "error","message": format!("{:?}", e)})),
+        )),
+    }
 }
 
 pub async fn edit_note_handler(
@@ -240,8 +236,8 @@ pub async fn edit_note_handler(
     // Update (if empty, use old value)
     let update_result =
         sqlx::query(r#"UPDATE notes SET title = ?, content = ?, is_published = ? WHERE id = ?"#)
-            .bind(&body.title.unwrap_or_else(|| note.title))
-            .bind(&body.content.unwrap_or_else(|| note.content))
+            .bind(body.title.unwrap_or(note.title))
+            .bind(body.content.unwrap_or(note.content))
             .bind(i8_is_published)
             .bind(&id)
             .execute(&data.db)

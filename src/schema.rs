@@ -1,13 +1,13 @@
 use serde::{Deserialize, Serialize};
 
-// List
+/// Query parameters for listing notes with pagination
 #[derive(Deserialize, Debug, Default)]
 pub struct FilterOptions {
     pub page: Option<usize>,
     pub limit: Option<usize>,
 }
 
-// Create
+/// Schema for creating a new note
 #[derive(Serialize, Deserialize, Debug)]
 pub struct CreateNoteSchema {
     pub title: String,
@@ -16,7 +16,7 @@ pub struct CreateNoteSchema {
     pub is_published: Option<bool>,
 }
 
-// Update
+/// Schema for updating an existing note
 #[derive(Serialize, Deserialize, Debug)]
 pub struct UpdateNoteSchema {
     pub title: Option<String>,
