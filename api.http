@@ -1,11 +1,11 @@
 ### Health Check
-GET http://localhost:8080/api/healthcheck
+GET http://localhost:8080/api/v1/healthcheck
 
 ### List
-GET http://localhost:8080/api/notes
+GET http://localhost:8080/api/v1/notes
 
 ### Create
-POST http://localhost:8080/api/notes
+POST http://localhost:8080/api/v1/notes
 content-type: application/json
 
 {
@@ -15,10 +15,10 @@ content-type: application/json
 }
 
 ### Read
-GET http://localhost:8080/api/notes/05406abb-187e-4f00-9399-07872a6677f6
+GET http://localhost:8080/api/v1/notes/a476b9df-a278-40c0-971c-d99e8bc51942
 
 ### Update
-PATCH http://localhost:8080/api/notes/05406abb-187e-4f00-9399-07872a6677f6
+PATCH http://localhost:8080/api/v1/notes/a476b9df-a278-40c0-971c-d99e8bc51942
 content-type: application/json
 
 {
@@ -26,5 +26,5 @@ content-type: application/json
 }
 
 ### Delete
-DELETE http://localhost:8080/api/notes/05406abb-187e-4f00-9399-07872a6677f6
+DELETE http://localhost:8080/api/v1/notes/a476b9df-a278-40c0-971c-d99e8bc51942
 
