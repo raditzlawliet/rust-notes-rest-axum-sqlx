@@ -4,10 +4,9 @@ This repository is for medium article: <https://medium.com/@raditzlawliet/build-
 
 ## Current Stack Version
 
-- Rust 1.89.0
-- MySQL 9.2
+- Rust 1.91.1
 
-## Setup, Prepare, Build & Run
+## How to
 
 ```sh
 # Init Project
