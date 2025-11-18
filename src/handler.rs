@@ -26,12 +26,10 @@ pub async fn health_check_handler() -> impl IntoResponse {
 }
 
 pub async fn note_list_handler(
-    opts: Option<Query<FilterOptions>>,
+    Query(opts): Query<FilterOptions>,
     State(data): State<Arc<AppState>>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
     // Param
-    let Query(opts) = opts.unwrap_or_default();
-
     let limit = opts.limit.unwrap_or(10);
     let offset = (opts.page.unwrap_or(1) - 1) * limit;
 
