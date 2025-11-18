@@ -32,15 +32,11 @@ cargo install cargo-watch
 
 # Run with watch
 cargo watch -q -c -w src/ -x run
+```
 
+## Migration
 
-# Docker Compose up & detach
-docker-compose up -d
-
-# Shutdown docker compose
-docker-compose down
-
-
+```sh
 # CLI For migration
 cargo install sqlx-cli
 

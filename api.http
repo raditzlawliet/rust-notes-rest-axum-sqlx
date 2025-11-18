@@ -1,14 +1,14 @@
 ### Health Check
-GET http://localhost:8080/api/healthcheck
+GET http://localhost:8080/api/v1/healthcheck
 
 ### List
 # @name list_note
-GET http://localhost:8080/api/notes
+GET http://localhost:8080/api/v1/notes
 
 @latest_note_id = {{list_note.response.body.$.notes[0].id}}
 
 ### Create
-POST http://localhost:8080/api/notes
+POST http://localhost:8080/api/v1/notes
 content-type: application/json
 
 {
@@ -18,10 +18,10 @@ content-type: application/json
 }
 
 ### Read
-GET http://localhost:8080/api/notes/{{latest_note_id}}
+GET http://localhost:8080/api/v1/notes/{{latest_note_id}}
 
 ### Update
-PATCH http://localhost:8080/api/notes/{{latest_note_id}}
+PATCH http://localhost:8080/api/v1/notes/{{latest_note_id}}
 content-type: application/json
 
 {
@@ -29,5 +29,5 @@ content-type: application/json
 }
 
 ### Delete
-DELETE http://localhost:8080/api/notes/{{latest_note_id}}
+DELETE http://localhost:8080/api/v1/notes/{{latest_note_id}}
 
