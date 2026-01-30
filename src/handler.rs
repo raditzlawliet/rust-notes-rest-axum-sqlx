@@ -148,13 +148,9 @@ pub async fn get_note_handler(
     State(data): State<Arc<AppState>>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
     // // get using query macro
-    // let query_result = sqlx::query_as!(
-    //     NoteModel,
-    //     r#"SELECT * FROM notes WHERE id = ?"#,
-    //     &id
-    // )
-    // .fetch_one(&data.db)
-    // .await;
+    // let query_result = sqlx::query_as!(NoteModel, r#"SELECT * FROM notes WHERE id = ?"#, &id)
+    //     .fetch_one(&data.db)
+    //     .await;
 
     // get not using query macro
     let query_result = sqlx::query_as::<_, NoteModel>(r#"SELECT * FROM notes WHERE id = ?"#)
@@ -194,13 +190,9 @@ pub async fn edit_note_handler(
     Json(body): Json<UpdateNoteSchema>,
 ) -> Result<impl IntoResponse, (StatusCode, Json<serde_json::Value>)> {
     // // validate note with query macro
-    // let query_result = sqlx::query_as!(
-    //     NoteModel,
-    //     r#"SELECT * FROM notes WHERE id = ?"#,
-    //     &id
-    // )
-    // .fetch_one(&data.db)
-    // .await;
+    // let query_result = sqlx::query_as!(NoteModel, r#"SELECT * FROM notes WHERE id = ?"#, &id)
+    //     .fetch_one(&data.db)
+    //     .await;
 
     // validate note without query macro
     let query_result = sqlx::query_as::<_, NoteModel>(r#"SELECT * FROM notes WHERE id = ?"#)
@@ -262,19 +254,15 @@ pub async fn edit_note_handler(
     }
 
     // // get updated data with query macro
-    // let updated_note = sqlx::query_as!(
-    //     NoteModel,
-    //     r#"SELECT * FROM notes WHERE id = ?"#,
-    //     &id
-    // )
-    // .fetch_one(&data.db)
-    // .await
-    // .map_err(|e| {
-    //     (
-    //         StatusCode::INTERNAL_SERVER_ERROR,
-    //         Json(json!({"status": "error","message": format!("{:?}", e)})),
-    //     )
-    // })?;
+    // let updated_note = sqlx::query_as!(NoteModel, r#"SELECT * FROM notes WHERE id = ?"#, &id)
+    //     .fetch_one(&data.db)
+    //     .await
+    //     .map_err(|e| {
+    //         (
+    //             StatusCode::INTERNAL_SERVER_ERROR,
+    //             Json(json!({"status": "error","message": format!("{:?}", e)})),
+    //         )
+    //     })?;
 
     // get updated data without query macro
     let updated_note = sqlx::query_as::<_, NoteModel>(r#"SELECT * FROM notes WHERE id = ?"#)
