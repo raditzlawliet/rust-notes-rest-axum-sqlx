@@ -2,9 +2,9 @@
 
 This repository is for medium article: <https://medium.com/@raditzlawliet/build-crud-rest-api-with-rust-and-mysql-using-axum-sqlx-d7e50b3cd130>
 
-## Current Stack Version
+## Stack
 
-- Rust 1.91.1
+- Rust 1.94.1
 
 ## How to
 
@@ -24,8 +24,8 @@ cargo add uuid -F "serde v4"
 cargo add sqlx --features "runtime-async-std-native-tls mysql chrono uuid"
 
 # Build & Run Project
-cargo build
 cargo run
+cargo build
 
 # CLI For Watch source when running & Automatically rebuild the project
 cargo install cargo-watch
