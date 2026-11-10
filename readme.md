@@ -4,7 +4,7 @@ This repository is for medium article: <https://medium.com/@raditzlawliet/build-
 
 ## Stack
 
-- Rust 1.94.1
+- Rust 1.99.1
 
 ## How to
 
